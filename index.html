@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111827">
+  <meta name="description" content="Browse GATE CS test series papers, start a timed attempt, and review solutions.">
+  <title>Test Vault · GATE CS Test Library</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23111827'/%3E%3Cpath d='M18 20h28v6H18zm0 11h20v6H18zm0 11h28v6H18z' fill='%23fbbf24'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="page-index">
+  <a class="skip-link" href="#main">Skip to tests</a>
+
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="index.html" aria-label="Test Vault home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none"><rect x="4" y="5" width="24" height="6" rx="2" fill="currentColor"/><rect x="4" y="14" width="17" height="6" rx="2" fill="currentColor" opacity=".78"/><rect x="4" y="23" width="24" height="4" rx="2" fill="currentColor" opacity=".55"/><path d="m23 21 4 4 4-7" stroke="#fbbf24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="brand-text">Test<span>Vault</span></span>
+      </a>
+      <div class="header-actions">
+        <span class="completion-pill" id="completionPill">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5 8 14l8-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span id="completionText">0 completed</span>
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="shell">
+    <section class="hero" aria-labelledby="heroTitle">
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="hero-content">
+        <div class="hero-copy">
+          <p class="eyebrow">GATE CS · Test library</p>
+          <h1 id="heroTitle">Practice like it’s<br>exam day.</h1>
+          <p class="hero-lead">Every mock, subject test, and topic drill in one place. Start the clock, solve the paper, then check the solutions.</p>
+          <div class="hero-stats" id="heroStats">
+            <span><strong>641</strong> tests</span>
+            <span><strong>5</strong> providers</span>
+            <span><strong>15</strong> subjects</span>
+          </div>
+        </div>
+        <div class="search-wrap">
+          <label class="search-box" for="searchInput">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 16 4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <input id="searchInput" type="search" placeholder="Search tests, subjects, providers…" autocomplete="off" spellcheck="false">
+            <kbd>/</kbd>
+          </label>
+          <p class="search-hint">Try “full mock”, “databases”, or “GATE 2024”</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="filter-card" aria-label="Filter tests">
+      <div class="filter-top">
+        <div class="provider-block">
+          <span class="filter-title">Provider</span>
+          <div class="chips" id="providerChips" role="group" aria-label="Filter by provider"></div>
+        </div>
+        <button class="text-btn" id="clearFilters" type="button">Clear all</button>
+      </div>
+
+      <div class="filter-grid">
+        <label class="field">
+          <span>Year</span>
+          <select id="yearFilter"></select>
+        </label>
+        <label class="field">
+          <span>Test type</span>
+          <select id="sectionFilter"></select>
+        </label>
+        <label class="field">
+          <span>Subject</span>
+          <select id="subjectFilter"></select>
+        </label>
+        <label class="field">
+          <span>Sort by</span>
+          <select id="sortBy">
+            <option value="default">Provider &amp; year</option>
+            <option value="newest">Newest first</option>
+            <option value="name">Name A–Z</option>
+            <option value="duration-asc">Shortest first</option>
+            <option value="duration-desc">Longest first</option>
+          </select>
+        </label>
+        <label class="check-field">
+          <input type="checkbox" id="hideCompleted">
+          <span class="check-box" aria-hidden="true">
+            <svg viewBox="0 0 16 16"><path d="m3.5 8.5 3 3 6-7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span>Hide completed</span>
+        </label>
+      </div>
+    </section>
+
+    <div class="results-bar">
+      <p id="resultCount" aria-live="polite">Loading tests…</p>
+      <span class="results-note">Timer starts when you open a test</span>
+    </div>
+
+    <section id="testGrid" class="test-grid" aria-label="Tests"></section>
+
+    <div class="empty-state" id="emptyState" hidden>
+      <div class="empty-icon" aria-hidden="true">
+        <svg viewBox="0 0 48 48"><circle cx="22" cy="22" r="12" fill="none" stroke="currentColor" stroke-width="3"/><path d="m31 31 8 8" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+      </div>
+      <h2>No tests match those filters</h2>
+      <p>Try a different search, subject, or test type.</p>
+      <button class="btn btn-primary" type="button" id="emptyClear">Reset filters</button>
+    </div>
+
+    <footer class="site-footer">
+      <p>Static library · works offline · progress is saved in this browser.</p>
+      <p class="footer-tip">For the best PDF experience, run <code>python3 -m http.server 8000</code> in this folder.</p>
+    </footer>
+  </main>
+
+  <script src="data.js"></script>
+  <script src="store.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
